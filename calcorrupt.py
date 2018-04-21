@@ -68,7 +68,7 @@ def corrupt_file():
 					else:
 						print("TODO: Negative shift. (Shift left)")
 						print("Negative shift values are not currently supported, so that probably didn't work! Sorry, I'll get on it.")
-						byte_data[b] = byte_data[b] << -corruption_value
+						byte_data[b] = (byte_data[b] << -corruption_value)%255
 
 				elif radio_v.get() == 2:
 					#Multiply
