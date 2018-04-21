@@ -36,7 +36,7 @@ def corrupt_file():
 	end_byte = end_byte_entry.get()
 	if end_byte != "":
 		end_byte = int(end_byte)
-	corruption_chance = int(corruption_chance_entry.get())
+	corruption_chance = float(corruption_chance_entry.get())
 	if corrupt_value_entry.get() != "":
 		corruption_value = int(corrupt_value_entry.get())
 
@@ -56,7 +56,7 @@ def corrupt_file():
 	print("Corrupting file!")
 	for b in range(start_byte, end_byte+1):
 		if not b % n:
-			if randint(0, 99) < corruption_chance:
+			if randint(1, 10000)/100 <= corruption_chance:
 				if radio_v.get() == 0:
 					#Increment
 					byte_data[b] = (byte_data[b] + corruption_value)%255
