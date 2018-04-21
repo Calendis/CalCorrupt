@@ -54,7 +54,6 @@ def corrupt_file():
 		end_byte = len(byte_data)-1
 
 	print("Corrupting file!")
-	print("Corruption option: "+str(radio_v.get()))
 	for b in range(start_byte, end_byte+1):
 		if not b % n:
 			if randint(1, 10000)/100 <= corruption_chance:
