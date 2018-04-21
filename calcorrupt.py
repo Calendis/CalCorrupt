@@ -54,6 +54,7 @@ def corrupt_file():
 		end_byte = len(byte_data)-1
 
 	print("Corrupting file!")
+	print("Corruption option: "+str(radio_v.get()))
 	for b in range(start_byte, end_byte+1):
 		if not b % n:
 			if randint(1, 10000)/100 <= corruption_chance:
@@ -89,6 +90,15 @@ def corrupt_file():
 					byte_data[b] = 255-byte_data[b]
 
 				elif radio_v.get() == 7:
+					#Byteshift
+					try:
+						byte_data[b] = byte_data[b+corruption_value]
+					except IndexError:
+						pass
+					else:
+						pass
+
+				elif radio_v.get() == 8:
 					#Randomize
 					byte_data[b] = randint(0,255)
 
@@ -138,13 +148,14 @@ corruption_chance_entry = tk.Entry(base_widget, width=5, bg="white")
 
 corruption_options = [
 	("Increment", 1),
-	("Shift right", 2),
+	("Bitshift right", 2),
 	("Multiply by", 3),
 	("Power", 4),
 	("Exponent", 5),
 	("Log, base", 6),
 	("Invert", 7),
-	("Randomize value", 8)
+	("Byteshift right", 8),
+	("Randomize value", 9)
 ]
 
 radiobuttons = []
@@ -187,7 +198,7 @@ for radiobutton_label in radiobutton_labels:
 	radiobutton_label.grid(column=1, row=i, sticky=tk.E)
 	i += 1
 
-corrupt_button.grid(column=1, row=10, sticky=tk.SE, pady=16)
+corrupt_button.grid(column=1, row=11, sticky=tk.SE, pady=16)
 corrupt_value_entry.grid(column=2, row=6, sticky=tk.W, padx=24)
 
 base_widget.mainloop()
