@@ -10,9 +10,9 @@ import tkinter as tk
 from tkinter import filedialog
 
 base_widget = tk.Tk()
-base_widget.geometry("675x500")
+base_widget.geometry("600x400")
 window_width = 675
-window_height = 500
+window_height = 400
 
 number_of_columns = 3
 for i in range(number_of_columns):
@@ -27,8 +27,7 @@ def open_file():
 	global opened_file_path
 	opened_file_path = filedialog.askopenfilename(title=uitext.OPEN_DIALOGUE)
 	opened_file = "File opened: "+opened_file_path.split("/")[-1]
-	opened_file_label = tk.Label(base_widget, text=opened_file)
-	opened_file_label.grid(column=0, row=0)
+	opened_file_label.config(text=opened_file)
 
 def corrupt_file():
 	n = int(corrupt_every_n_entry.get())
@@ -168,7 +167,7 @@ corrupt_button =tk.Button(base_widget, text=uitext.CORRUPT_TEXT, command=corrupt
 corrupt_value_entry = tk.Entry(base_widget, width=5, bg="white")
 
 #These add the defined widgets onto the master widget.
-logo_label.grid(column=2, row=0, sticky=tk.E, padx=10, pady=10)
+logo_label.grid(column=2, row=0, padx=0, pady=10)
 hello_label.grid(column=0, row=0, sticky=tk.N)
 opened_file_label.grid(column=0, row=0)
 file_corrupted_label.grid(column=0, row=0, sticky=tk.S)
