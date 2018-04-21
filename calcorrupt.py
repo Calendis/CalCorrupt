@@ -84,7 +84,7 @@ def corrupt_file():
 
 				elif radio_v.get() == 5:
 					#Log
-					byte_data[b] = log(byte_data[b], corruption_value)%255
+					byte_data[b] = round(log(byte_data[b], corruption_value)%255)
 
 				elif radio_v.get() == 6:
 					#Invert
