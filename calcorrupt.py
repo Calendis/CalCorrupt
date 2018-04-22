@@ -59,7 +59,7 @@ def corrupt_file():
 		end_byte = int(end_byte)
 	corruption_chance = float(corruption_chance_entry.get())
 	if corrupt_value_entry.get() != "":
-		corruption_value = int(corrupt_value_entry.get())
+		corruption_value = float(corrupt_value_entry.get())
 
 	print("Corrupting every "+corrupt_every_n_entry.get()+" bytes.")
 	print("Starting at "+start_byte_entry.get()+" and ending at "+end_byte_entry.get()+".")
@@ -76,26 +76,26 @@ def corrupt_file():
 			if randint(1, 10000)/100 <= corruption_chance:
 				if radio_v.get() == 0:
 					#Increment
-					byte_data[b] = (byte_data[b] + corruption_value)%255
+					byte_data[b] = (byte_data[b] + int(corruption_value))%255
 
 				elif radio_v.get() == 1:
 					#Shift right/left
 					if corruption_value >= 0:
-						byte_data[b] = byte_data[b] >> corruption_value
+						byte_data[b] = byte_data[b] >> int(corruption_value)
 					else:
-						byte_data[b] = (byte_data[b] << -corruption_value)%255
+						byte_data[b] = (byte_data[b] << -int(corruption_value))%255
 
 				elif radio_v.get() == 2:
 					#Multiply
-					byte_data[b] = (byte_data[b]*corruption_value)%255
+					byte_data[b] = round((byte_data[b]*corruption_value)%255)
 
 				elif radio_v.get() == 3:
 					#Power
-					byte_data[b] = (byte_data[b]**corruption_value)%255
+					byte_data[b] = round((byte_data[b]**corruption_value)%255)
 
 				elif radio_v.get() == 4:
 					#Exponent
-					byte_data[b] = (corruption_value**byte_data[b])%255
+					byte_data[b] = round((corruption_value**byte_data[b])%255)
 
 				elif radio_v.get() == 5:
 					#Log
@@ -103,12 +103,12 @@ def corrupt_file():
 
 				elif radio_v.get() == 6:
 					#Invert
-					byte_data[b] = 255-byte_data[b]
+					byte_data[b] = 255-int(byte_data[b])
 
 				elif radio_v.get() == 7:
 					#Byteshift
 					try:
-						byte_data[b] = byte_data[b+corruption_value]
+						byte_data[b] = byte_data[b+int(corruption_value)]
 					except IndexError:
 						pass
 					else:
