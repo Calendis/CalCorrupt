@@ -26,11 +26,13 @@ logo = tk.PhotoImage(file="resources/cal.png")
 opened_file_path = ""
 opened_file_path_rel = "No file opened."
 
-def open_file():
+def open_file(reload=False):
 	global file
 	global byte_data
+	global opened_file_path
 
-	opened_file_path = filedialog.askopenfilename(title=uitext.OPEN_DIALOGUE)
+	if not reload:
+		opened_file_path = filedialog.askopenfilename(title=uitext.OPEN_DIALOGUE)
 	opened_file_path_rel = "File opened: "+opened_file_path.split("/")[-1]
 	opened_file_extension = opened_file_path.split(".")[-1]
 	opened_file_path_rel_shortened = opened_file_path_rel[:26] + (opened_file_path_rel[26:] and "...")
@@ -51,6 +53,11 @@ def open_file():
 def corrupt_file():
 	global file
 	global byte_data
+
+	open_file(True) #Reloads the file in case it was edited before corruption by an outside source.
+
+	file = open(opened_file_path, "r+b")
+	byte_data = bytearray(file.read())
 
 	n = int(corrupt_every_n_entry.get())
 	start_byte = int(start_byte_entry.get())
