@@ -28,6 +28,7 @@ def open_file():
 	opened_file_path = filedialog.askopenfilename(title=uitext.OPEN_DIALOGUE)
 	opened_file = "File opened: "+opened_file_path.split("/")[-1]
 	opened_file_label.config(text=opened_file)
+	file_corrupted_label.config(text=uitext.FILE_NOT_CORRUPTED)
 
 def corrupt_file():
 	n = int(corrupt_every_n_entry.get())
@@ -108,6 +109,8 @@ def corrupt_file():
 	file.write(byte_data)
 	file.close()
 	print("All done.")
+
+	file_corrupted_label.config(text=uitext.FILE_CORRUPTED)
 	
 
 

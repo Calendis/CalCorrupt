@@ -1,4 +1,4 @@
-VERSION = "0.0.2"
+VERSION = "0.0.3"
 HEADER = "Welcome to CalCorrupt "+VERSION+"."
 OPEN_DIALOGUE = "Open. The file will be edited directly, so be careful and make backups!"
 FILE_CORRUPTED = "File corrupted successfully!"
