@@ -11,6 +11,9 @@ from tkinter import filedialog
 
 base_widget = tk.Tk()
 base_widget.geometry("600x400")
+base_widget.resizable(False, False)
+base_widget.title("CalCorrupt "+uitext.VERSION)
+
 window_width = 675
 window_height = 400
 
@@ -21,16 +24,34 @@ for i in range(number_of_columns):
 logo = tk.PhotoImage(file="resources/cal.png")
 
 opened_file_path = ""
-opened_file = "No file opened."
+opened_file_path_rel = "No file opened."
 
 def open_file():
-	global opened_file_path
+	global file
+	global byte_data
+
 	opened_file_path = filedialog.askopenfilename(title=uitext.OPEN_DIALOGUE)
-	opened_file = "File opened: "+opened_file_path.split("/")[-1]
-	opened_file_label.config(text=opened_file)
+	opened_file_path_rel = "File opened: "+opened_file_path.split("/")[-1]
+	opened_file_extension = opened_file_path.split(".")[-1]
+	opened_file_path_rel_shortened = opened_file_path_rel[:26] + (opened_file_path_rel[26:] and "...")
+
+	if opened_file_extension.upper() == "PY":
+		print("Please do not corrupt py files!")
+		opened_file_label.config(text=".py files disallowed!")
+		return
+
+	file = open(opened_file_path, "r+b")
+	byte_data = bytearray(file.read())
+
+	opened_file_label.config(text=opened_file_path_rel_shortened)
 	file_corrupted_label.config(text=uitext.FILE_NOT_CORRUPTED)
+	file_type_label.config(text="File type: "+opened_file_extension)
+	file_length_label.config(text="File length: "+str(len(byte_data))+" bytes.")
 
 def corrupt_file():
+	global file
+	global byte_data
+
 	n = int(corrupt_every_n_entry.get())
 	start_byte = int(start_byte_entry.get())
 	end_byte = end_byte_entry.get()
@@ -44,10 +65,6 @@ def corrupt_file():
 	print("Starting at "+start_byte_entry.get()+" and ending at "+end_byte_entry.get()+".")
 	print("Chance of corruption: "+corruption_chance_entry.get()+".")
 	print("Corruption value: "+corrupt_value_entry.get()+".")
-
-	print(opened_file_path)
-	file = open(opened_file_path, "r+b")
-	byte_data = bytearray(file.read())
 
 	if end_byte == "":
 		print("No end byte. Going all the way.")
@@ -131,9 +148,11 @@ menu_bar.add_cascade(label="Help", menu=help_menu)
 logo_label = tk.Label(base_widget, image=logo, relief="raised")
 hello_label = tk.Label(base_widget, text=uitext.HEADER, bg="black", fg="lime")
 file_corrupted_label = tk.Label(base_widget, text=uitext.FILE_NOT_CORRUPTED)
-opened_file_label = tk.Label(base_widget, text=opened_file)
+opened_file_label = tk.Label(base_widget, text=opened_file_path_rel)
 corruption_settings_label = tk.Label(base_widget, text=uitext.CORRUPTION_SETTINGS, bg="black", fg="cyan")
 file_info_label = tk.Label(base_widget, text=uitext.FILE_INFO)
+file_type_label = tk.Label(base_widget, text="")
+file_length_label = tk.Label(base_widget, text="")
 
 corrupt_every_n_label = tk.Label(base_widget, text=uitext.CORRUPT_EVERY_N)
 corrupt_every_n_entry = tk.Entry(base_widget, width=5, bg="white")
@@ -175,7 +194,10 @@ hello_label.grid(column=0, row=0, sticky=tk.N)
 opened_file_label.grid(column=0, row=0)
 file_corrupted_label.grid(column=0, row=0, sticky=tk.S)
 corruption_settings_label.grid(column=1, row=0, sticky=tk.N)
-file_info_label.grid(column=0, row=1, pady=32)
+
+file_info_label.grid(column=0, row=1, pady=24)
+file_type_label.grid(column=0, row=2)
+file_length_label.grid(column=0, row=3)
 
 corrupt_every_n_label.grid(column=1, row=0)
 corrupt_every_n_entry.grid(column=1, row=0, sticky=tk.E)
