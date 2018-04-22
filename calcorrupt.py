@@ -124,7 +124,7 @@ def corrupt_file():
 	print("Writing file...")
 	file.seek(0)
 	file.write(byte_data)
-	file.close()
+	#file.close()
 	print("All done.")
 
 	file_corrupted_label.config(text=uitext.FILE_CORRUPTED)
