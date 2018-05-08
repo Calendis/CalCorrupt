@@ -1,7 +1,11 @@
-# A file corruptor
+# A file corruptor, by Calendis
 # Intended for use with video game ROMs, but can be used for anything
 # Start date: 8th April, 2018
+
+'''Distributed under the GNU GPL-3.0-or-later.'''
+
 from lib import uitext
+from lib import dialogue
 
 from random import randint
 from math import log
@@ -136,9 +140,6 @@ def corrupt_file():
 
 	file_corrupted_label.config(text=uitext.FILE_CORRUPTED)
 	
-
-
-
 #Sets up the menu
 menu_bar = tk.Menu(base_widget)
 base_widget.config(menu=menu_bar)
@@ -146,8 +147,7 @@ file_menu = tk.Menu(menu_bar)
 file_menu.add_command(label="Open",command=open_file)
 file_menu.add_command(label="Quit", command=base_widget.quit)
 help_menu = tk.Menu(menu_bar)
-help_menu.add_command(label="Help")
-help_menu.add_command(label="About")
+help_menu.add_command(label="About", command=dialogue.show_about)
 menu_bar.add_cascade(label="File", menu=file_menu)
 menu_bar.add_cascade(label="Help", menu=help_menu)
 
