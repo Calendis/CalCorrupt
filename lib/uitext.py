@@ -2,7 +2,7 @@
 
 '''Distributed under the GNU GPL-3.0-or-later.'''
 
-VERSION = "0.0.5"
+VERSION = "0.0.6"
 HEADER = "Welcome to CalCorrupt "+VERSION+"."
 OPEN_DIALOGUE = "Open. The file will be edited directly, so be careful and make backups!"
 FILE_CORRUPTED = "File corrupted successfully!"
@@ -14,6 +14,7 @@ START_BYTE = "Start byte: "
 END_BYTE = "End byte (optional): "
 CORRUPTION_CHANCE = "Corruption chance %: "
 CORRUPT_TEXT = "Corrupt file!"
+CORRUPTIONS_STACK = "Corruptions stack?"
 
 ABOUT_TITLE = "About CalCorrupt "+VERSION+"."
 ABOUT_TEXT = "CalCorrupt "+VERSION+", an open-source file corrupter.\nLiscenced under the GNU GPL-3.0-or-later."

@@ -36,3 +36,4 @@ CalCorrupt is distributed under the GNU GPL-3.0-or-later.
   * Byteshift (shifting byte order)
   * Randomize
 * Length of file in bytes is shown
+* Toggle whether corruptions stack (applied successively as opposed to replacing each other)

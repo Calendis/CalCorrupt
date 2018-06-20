@@ -30,13 +30,24 @@ logo = tk.PhotoImage(file="resources/cal.png")
 opened_file_path = ""
 opened_file_path_rel = "No file opened."
 
+corruption_stacking = False
+
+def toggle_corruption_stack():
+	global corruption_stacking
+	if corruption_stacking:
+		corruption_stacking = False
+	else:
+		corruption_stacking = True
+
 def open_file(reload=False):
 	global file
 	global byte_data
 	global opened_file_path
+	global original_byte_data
 
 	if not reload:
 		opened_file_path = filedialog.askopenfilename(title=uitext.OPEN_DIALOGUE)
+
 	opened_file_path_rel = "File opened: "+opened_file_path.split("/")[-1]
 	opened_file_extension = opened_file_path.split(".")[-1]
 	opened_file_path_rel_shortened = opened_file_path_rel[:26] + (opened_file_path_rel[26:] and "...")
@@ -49,6 +60,10 @@ def open_file(reload=False):
 	file = open(opened_file_path, "r+b")
 	byte_data = bytearray(file.read())
 
+	if not reload:
+		file2 = open(opened_file_path, "r+b")
+		original_byte_data = bytearray(file2.read())
+
 	opened_file_label.config(text=opened_file_path_rel_shortened)
 	file_corrupted_label.config(text=uitext.FILE_NOT_CORRUPTED)
 	file_type_label.config(text="File type: "+opened_file_extension)
@@ -57,11 +72,19 @@ def open_file(reload=False):
 def corrupt_file():
 	global file
 	global byte_data
+	global original_byte_data
+	global corruption_stacking
+	global opened_file_path
 
 	open_file(True) #Reloads the file in case it was edited before corruption by an outside source.
+					#Note: This is useless while corruption stacking is OFF.
 
-	file = open(opened_file_path, "r+b")
-	byte_data = bytearray(file.read())
+	if not corruption_stacking:
+		print("Corruption stacking is OFF. Resetting byte data to original.")
+		byte_data = bytearray(original_byte_data) #It must be passed through a bytearray argument to avoid making a copy, I think
+													#Anyway, it doesn't work without the bytearray function
+	else:
+		print("Corruption stacking is ON. NOT resetting byte data to original.")
 
 	n = int(corrupt_every_n_entry.get())
 	start_byte = int(start_byte_entry.get())
@@ -135,6 +158,7 @@ def corrupt_file():
 	print("Writing file...")
 	file.seek(0)
 	file.write(byte_data)
+
 	#file.close()
 	print("All done.")
 
@@ -172,6 +196,8 @@ end_byte_entry = tk.Entry(base_widget, width=5, bg="white")
 
 corruption_chance_label = tk.Label(base_widget, text=uitext.CORRUPTION_CHANCE)
 corruption_chance_entry = tk.Entry(base_widget, width=5, bg="white")
+
+corruption_stack_toggle = tk.Checkbutton(base_widget, text=uitext.CORRUPTIONS_STACK, command=toggle_corruption_stack)
 
 corruption_options = [
 	("Increment", 1),
@@ -217,6 +243,8 @@ end_byte_entry.grid(column=1, row=1, sticky=tk.NE)
 
 corruption_chance_label.grid(column=1, row=1)
 corruption_chance_entry.grid(column=1, row=1, sticky=tk.E)
+
+corruption_stack_toggle.grid(column=1, row=1, pady=0, sticky=tk.S)
 
 i = 2
 for radiobutton in radiobuttons:
