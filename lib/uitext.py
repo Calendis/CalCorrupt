@@ -2,7 +2,7 @@
 
 '''Distributed under the GNU GPL-3.0-or-later.'''
 
-VERSION = "0.0.7"
+VERSION = "0.0.8"
 HEADER = "Welcome to CalCorrupt "+VERSION+"."
 OPEN_DIALOGUE = "Open. The file will be edited directly, so be careful and make backups!"
 FILE_CORRUPTED = "File corrupted successfully!"
