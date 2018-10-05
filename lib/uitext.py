@@ -18,3 +18,12 @@ CORRUPTIONS_STACK = "Corruptions stack?"
 
 ABOUT_TITLE = "About CalCorrupt "+VERSION+"."
 ABOUT_TEXT = "CalCorrupt "+VERSION+", an open-source file corrupter.\nLiscenced under the GNU GPL-3.0-or-later."
+
+ERROR_TITLE = "Error"
+
+CORRUPTION_VALUE_ERROR_TEXT = "You must set a valid corruption value!"
+EVERY_N_ERROR_TEXT = "You must specify the interval on which bytes are corrupted! (Corrupt every n bytes)"
+FILE_ERROR_TEXT = "You must first open a file!"
+START_BYTE_ERROR_TEXT = "Enter a valid start byte!"
+END_BYTE_ERROR_TEXT = "Enter a valid end byte or leave blank!"
+CORRUPTION_CHANCE_ERROR_TEXT = "Enter a valid corruption chance!"

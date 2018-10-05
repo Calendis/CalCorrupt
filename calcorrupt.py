@@ -58,6 +58,7 @@ def open_file(reload=False):
 		return
 
 	file = open(opened_file_path, "r+b")
+
 	byte_data = bytearray(file.read())
 
 	if not reload:
@@ -76,8 +77,13 @@ def corrupt_file():
 	global corruption_stacking
 	global opened_file_path
 
-	open_file(True) #Reloads the file in case it was edited before corruption by an outside source.
-					#Note: This is useless while corruption stacking is OFF.
+	#Reloads the file in case it was edited before corruption by an outside source.
+	#Note: This is useless while corruption stacking is OFF.
+	try:
+		open_file(True)
+	except:
+		dialogue.show_file_error()
+		return
 
 	if not corruption_stacking:
 		print("Corruption stacking is OFF. Resetting byte data to original.")
@@ -86,14 +92,38 @@ def corrupt_file():
 	else:
 		print("Corruption stacking is ON. NOT resetting byte data to original.")
 
-	n = int(corrupt_every_n_entry.get())
-	start_byte = int(start_byte_entry.get())
+	try:
+		n = int(corrupt_every_n_entry.get())
+	except:
+		dialogue.show_every_n_error()
+		return
+
+	try:
+		start_byte = int(start_byte_entry.get())
+	except:
+		dialogue.show_start_byte_error()
+		return
+
 	end_byte = end_byte_entry.get()
 	if end_byte != "":
-		end_byte = int(end_byte)
-	corruption_chance = float(corruption_chance_entry.get())
-	if corrupt_value_entry.get() != "":
-		corruption_value = float(corrupt_value_entry.get())
+		try:
+			end_byte = int(end_byte)
+		except:
+			dialogue.show_end_byte_error()
+			return
+	
+	try:
+		corruption_chance = float(corruption_chance_entry.get())
+	except:
+		dialogue.show_corruption_chance_error()
+		return
+	
+	if radio_v.get != 9 and radio_v.get() != 7: # Makes sure the user sets a valid corruption value, unless they're using a setting which doesn't require it
+		try:
+			corruption_value = float(corrupt_value_entry.get())
+		except:
+			dialogue.show_corruption_value_error()
+			return
 
 	print("Corrupting every "+corrupt_every_n_entry.get()+" bytes.")
 	print("Starting at "+start_byte_entry.get()+" and ending at "+end_byte_entry.get()+".")
