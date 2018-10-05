@@ -250,6 +250,7 @@ for i, v in enumerate(corruption_options):
 
 corrupt_button =tk.Button(base_widget, text=uitext.CORRUPT_TEXT, command=corrupt_file)
 corrupt_value_entry = tk.Entry(base_widget, width=5, bg="white")
+corrupt_value_label = tk.Label(base_widget, text=uitext.CORRUPTION_VALUE)
 
 #These add the defined widgets onto the master widget.
 logo_label.grid(column=2, row=0, padx=0, pady=10)
@@ -257,6 +258,7 @@ hello_label.grid(column=0, row=0, sticky=tk.N)
 opened_file_label.grid(column=0, row=0)
 file_corrupted_label.grid(column=0, row=0, sticky=tk.S)
 corruption_settings_label.grid(column=1, row=0, sticky=tk.N)
+corrupt_value_label.grid(column=2, row=5, sticky=tk.SW)
 
 file_info_label.grid(column=0, row=1, pady=24)
 file_type_label.grid(column=0, row=2)

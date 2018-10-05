@@ -15,6 +15,7 @@ END_BYTE = "End byte (optional): "
 CORRUPTION_CHANCE = "Corruption chance %: "
 CORRUPT_TEXT = "Corrupt file!"
 CORRUPTIONS_STACK = "Corruptions stack?"
+CORRUPTION_VALUE = "        Value:"
 
 ABOUT_TITLE = "About CalCorrupt "+VERSION+"."
 ABOUT_TEXT = "CalCorrupt "+VERSION+", an open-source file corrupter.\nLiscenced under the GNU GPL-3.0-or-later."
