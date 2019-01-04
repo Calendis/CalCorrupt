@@ -4,9 +4,9 @@
 **You must have Python 3.**
 You can get it from [python.org](https://www.python.org/)
 
-**You must have the Tkinter library installed.**
+**You must have [PyQt5](https://www.riverbankcomputing.com/software/pyqt/download5) installed.**
 
-Most Linux distributions offer it as a package. For Windows and Mac, see [http://www.tkdocs.com/tutorial/install.html](http://www.tkdocs.com/tutorial/install.html)
+Most Linux distributions offer it as a package. It can be installed on Windows and Mac via PIP.
 
 **Running:**
 
@@ -26,14 +26,15 @@ CalCorrupt is distributed under the GNU GPL-3.0-or-later.
 * Choose starting and ending byte.
 * Choose chance of corruption occuring on a byte
 * Different types of corruption:
-  * Byte increment
-  * Bitshift
+  * Increment
   * Multiply
-  * Power (x to the a)
-  * Exponent (a to the x)
+  * Power (x to the v)
+  * Exponent (v to the x)
   * Log
-  * Invert (255-a)
+  * Invert (v - x)
+  * Bitshift
   * Byteshift (shifting byte order)
   * Randomize
 * Length of file in bytes is shown
 * Toggle whether corruptions stack (applied successively as opposed to replacing each other)
+* Random fuzz value can be added to corruption value
