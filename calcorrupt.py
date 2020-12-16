@@ -9,7 +9,7 @@ from lib import uitext, about_dialogue
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 
-from random import randint
+from random import randint, random
 from math import log
 
 class Ui_MainWindow(object):
@@ -308,9 +308,27 @@ class Ui_MainWindow(object):
         else:
         	print("Corruption stacking is ON. Not resetting byte data to original.")
 
-        n = int(self.thbyte_input.cleanText())
-        start_byte = int(self.start_input.cleanText())
-        end_byte = int(self.end_input.cleanText())
+
+        #  Get values from widgets
+        #  Also convert commas in input widgets to periods to account for differing locales!
+        n = self.thbyte_input.cleanText()
+        start_byte = self.start_input.cleanText()
+        end_byte = self.end_input.cleanText()
+        corruption_chance = self.chance_input.cleanText().replace(',', '.')  #  These may contain commas since they're
+        min_fuzz = self.min_fuzz_input.cleanText().replace(',', '.')         #  floats!
+        max_fuzz = self.max_fuzz_input.cleanText().replace(',', '.')
+        corruption_value = self.value_input.cleanText().replace(',', '.')
+
+        #  Convert retrieved strings into python number data types
+        n = int(n)
+        start_byte = int(start_byte)
+        end_byte = int(end_byte)
+        corruption_chance = float(corruption_chance)
+        min_fuzz = int(min_fuzz)
+        max_fuzz = int(max_fuzz)
+        corruption_value = float(corruption_value)
+
+        #  Some basic error checking
         if end_byte == -1:
             end_byte = len(self.byte_data)-1
             # An end byte of -1 means do all bytes
@@ -319,24 +337,23 @@ class Ui_MainWindow(object):
         	self.error_box.showMessage(uitext.BYTE_RANGE_ERROR)
         	return
 
-        corruption_chance = float(self.chance_input.cleanText())
-        min_fuzz = int(self.min_fuzz_input.cleanText())
-        max_fuzz = int(self.max_fuzz_input.cleanText())
-
         if max_fuzz < min_fuzz:
         	self.error_box.showMessage(uitext.FUZZ_RANGE_ERROR)
         	return
-
-        corruption_value = float(self.value_input.cleanText())
 
         print("Starting at byte "+self.start_input.cleanText()+" and ending at byte "+str(end_byte)+".")
         print("Corrupting every "+str(n)+" bytes.")
 
         print("Corrupting file using corruption option "+str(self.buttonGroup.checkedButton().text().split()[0].rstrip(",").replace("&", ""))+"!")
 
+        #  Iterate over each byte...
         for b in range(start_byte, end_byte+1):
+            #  As long as we're actually corrupting bytes...
+            #  and we're on an 'n'th byte
             if n != 0 and not b % n:
-        	    if randint(1, 10000)/100 <= corruption_chance:
+        	    #  And we are within the random chance
+        	    if random() <= corruption_chance:
+        	        #  Then corrupt according to the chosen setting
         	        if self.buttonGroup.checkedId() == -2:
         	        	# Increment
         	        	self.byte_data[b] = int(self.byte_data[b] + corruption_value) % 255
@@ -355,10 +372,15 @@ class Ui_MainWindow(object):
 
         	        elif self.buttonGroup.checkedId() == -6:
         	            # Log
-        	            if self.byte_data[b] != 0:
-        	                self.byte_data[b] = int(self.log(byte_data[b], corruption_value)) % 255
+        	            if corruption_value > 1:
+        	            	if self.byte_data[b] != 0:
+        	                	self.byte_data[b] = int(log(self.byte_data[b], corruption_value)) % 255
+        	            	else:
+        	                	print("WARNING: byte "+str(b)+" was zero and a logarithm could not be applied!")
+        	                	
         	            else:
-        	                print("WARNING: byte "+str(b)+" was zero and a logarithm could not be applied!")
+        	            	print("Log base is invalid!")
+        	            	break
 
         	        elif self.buttonGroup.checkedId() == -7:
         	            # Invert
