@@ -352,29 +352,29 @@ class Ui_MainWindow(object):
             #  and we're on an 'n'th byte
             if n != 0 and not b % n:
         	    #  And we are within the random chance
-        	    if random() <= corruption_chance:
+        	    if random()*100 <= corruption_chance:
         	        #  Then corrupt according to the chosen setting
         	        if self.buttonGroup.checkedId() == -2:
         	        	# Increment
-        	        	self.byte_data[b] = int(self.byte_data[b] + corruption_value) % 255
+        	        	self.byte_data[b] = int(self.byte_data[b] + corruption_value) % 256
 
         	        elif self.buttonGroup.checkedId() == -3:
         	            # Multiply
-        	            self.byte_data[b] = int(self.byte_data[b] * corruption_value) % 255
+        	            self.byte_data[b] = int(self.byte_data[b] * corruption_value) % 256
 
         	        elif self.buttonGroup.checkedId() == -4:
         	            # Power
-        	            self.byte_data[b] = int(self.byte_data[b] ** corruption_value) % 255
+        	            self.byte_data[b] = int(self.byte_data[b] ** corruption_value) % 256
 
         	        elif self.buttonGroup.checkedId() == -5:
         	            # Exponent
-        	            self.byte_data[b] = int(corruption_value ** self.byte_data[b]) % 255
+        	            self.byte_data[b] = int(corruption_value ** self.byte_data[b]) % 256
 
         	        elif self.buttonGroup.checkedId() == -6:
         	            # Log
         	            if corruption_value > 1:
         	            	if self.byte_data[b] != 0:
-        	                	self.byte_data[b] = int(log(self.byte_data[b], corruption_value)) % 255
+        	                	self.byte_data[b] = int(log(self.byte_data[b], corruption_value)) % 256
         	            	else:
         	                	print("WARNING: byte "+str(b)+" was zero and a logarithm could not be applied!")
         	                	
@@ -384,7 +384,7 @@ class Ui_MainWindow(object):
 
         	        elif self.buttonGroup.checkedId() == -7:
         	            # Invert
-        	            self.byte_data[b] = int(corruption_value - self.byte_data[b]) % 255
+        	            self.byte_data[b] = int(corruption_value - self.byte_data[b]) % 256
 
         	        elif self.buttonGroup.checkedId() == -8:
         	            # Bitshift
@@ -407,7 +407,7 @@ class Ui_MainWindow(object):
         	        	self.error_box.showMessage(uitext.INVALID_CORRUPTION_ERROR)
         	        	return
 
-        	        self.byte_data[b] = (self.byte_data[b] + randint(min_fuzz, max_fuzz)) % 255 # Add the fuzz setting
+        	        self.byte_data[b] = (self.byte_data[b] + randint(min_fuzz, max_fuzz)) % 256 # Add the fuzz setting
 
         print("Writing file...")
         self.file.seek(0)
